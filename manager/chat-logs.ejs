@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manager Chat Logs</title>
+  <link rel="stylesheet" href="/css/chat-log-style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="chat-log-container">
+    <h1>📄 All Chat Messages</h1>
+
+    <form method="get" action="/manager/chat-logs" class="search-form">
+      <input type="text" name="q" placeholder="Search by user name..." value="<%= searchQuery || '' %>">
+      <button type="submit">Search</button>
+    </form>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Message</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (messages.length > 0) { %>
+            <% messages.forEach(msg => { %>
+              <tr>
+                <td><%= msg.sender_name %></td>
+                <td><%= msg.receiver_name %></td>
+                <td><%= msg.content %></td>
+                <td><%= new Date(msg.timestamp).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="4">No chat records found.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/website-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top bar -->
+ <div class="topbar">
+  <div class="left">
+    <i class="fas fa-paper-plane"></i> matrimonix.com |
+    <i class="fas fa-phone"></i> 001 001
+  </div>
+  <div class="right social-icons">
+    <i class="fab fa-facebook"></i>
+    <i class="fab fa-twitter"></i>
+    <i class="fab fa-instagram"></i>
+    <i class="fab fa-linkedin"></i>
+  </div>
+</div>
+
+<div class="navbar">
+  <div class="logo">💍Matrimonix</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/packages">Packages</a>
+    <a href="/members">Members</a>
+    <a href="/stories">Stories</a>
+    <a href="/contact">Contact</a>
+  </div>
+  <div class="actions">
+    <select>
+      <option>English</option>
+    </select>
+    <a href="/user/login" class="btn login"><i class="fas fa-user"></i> Login</a>
+    <a href="/user/register" class="btn register">Register</a>
+  </div>
+</div>
+<script>
+  let currentSlide = 0;
+  const slider = document.querySelector('.testimonial-slider');
+  const dots = document.querySelectorAll('.dot');
+
+  function moveSlider(slideIndex) {
+    const cardWidth = document.querySelector('.testimonial-card').offsetWidth + 20; // card + margin
+    slider.style.transform = `translateX(-${cardWidth * slideIndex}px)`;
+    currentSlide = slideIndex;
+
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[slideIndex].classList.add('active');
+  }
+</script>
+
+
+</body>
+</html>

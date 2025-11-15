@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Security & Access</title>
+  <link rel="stylesheet" href="/css/manager-style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+  <div class="manager-dashboard-wrapper">
+    <h2 class="dashboard-heading">🔐 Security & Access</h2>
+
+    <!-- 👁️‍🗨️ Activity Logs -->
+    <section class="report-section">
+      <h3>📜 Activity Logs</h3>
+      <% if (logs.length > 0) { %>
+        <table class="reminder-table">
+          <thead>
+            <tr>
+              <th>Manager</th>
+              <th>Module</th>
+              <th>Accessed On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% logs.forEach(log => { %>
+              <tr>
+                <td><%= log.manager_name %></td>
+                <td><%= log.module %></td>
+                <td><%= new Date(log.timestamp).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No activity recorded yet.</p>
+      <% } %>
+    </section>
+
+    <!-- ❌ Suggest User Deletion -->
+    <section class="report-section">
+      <h3>🚫 Suggest User Deletion</h3>
+      <form method="POST" action="/manager/security/suggest-deletion">
+        <label>Select User:
+          <select name="user_id" required>
+            <% users.forEach(user => { %>
+              <option value="<%= user.id %>"><%= user.name %> - <%= user.email %></option>
+            <% }) %>
+          </select>
+        </label>
+        <textarea name="reason" required placeholder="Enter reason for deletion suggestion..."></textarea>
+        <button class="send-btn">📩 Submit Request</button>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

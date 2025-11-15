@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manager Dashboard</title>
+  <link rel="stylesheet" href="/css/manager-style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="manager-dashboard-wrapper">
+    <h2 class="dashboard-heading">Welcome, <%= manager.name %> 👋</h2>
+    <p class="dashboard-sub">Manage users, monitor activities, and stay on top of operations.</p>
+
+    <div class="manager-links">
+     <a href="/manager/users" class="dashboard-card">📄 User Profiles</a>
+
+      <a href="/manager/communication" class="dashboard-card">💬 Communication Logs</a>
+      <a href="/manager/reminders" class="dashboard-card">🔔 Reminders</a>
+      <a href="/manager/reports" class="dashboard-card">📈 Reports</a>
+      <a href="/manager/attendence" class="dashboard-card">🕒 Attendance</a>
+      <a href="/manager/security" class="dashboard-card">🛡️ Security & Access </a>
+      <a href="/manager/chat-logs" class="dashboard-card"> chat-logs </a>
+      <a href="/manager/logout" class="dashboard-card logout">🚪 Logout</a>
+    </div>
+  </div>
+</body>
+</html>

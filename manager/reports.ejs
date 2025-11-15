@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manager Reports</title>
+  <link rel="stylesheet" href="/css/manager-style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="manager-dashboard-wrapper">
+  <h2 class="dashboard-heading">📢 Reports & Escalations</h2>
+
+  <!-- 🔹 Report Suspicious Users -->
+  <section class="report-section">
+    <h3>🚩 Report a Suspicious User</h3>
+    <form method="POST" action="/manager/reports/user-report">
+      <label>User ID:</label>
+      <input type="number" name="reported_user_id" required placeholder="Enter user ID to report">
+      <label>Reason:</label>
+      <textarea name="reason" required placeholder="Describe the issue..."></textarea>
+      <button type="submit" class="send-btn">Report</button>
+    </form>
+
+    <% if (reports && reports.length > 0) { %>
+      <div class="report-table">
+        <h4>🧾 Your Submitted Reports</h4>
+        <ul>
+          <% reports.forEach(r => { %>
+            <li><strong><%= r.reported_user %></strong> - <%= r.reason %> (<%= r.timestamp.toLocaleDateString() %>)</li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+  </section>
+
+  <!-- 🔹 Case Reports -->
+  <section class="report-section">
+    <h3>📝 Submit Case Report</h3>
+    <form method="POST" action="/manager/reports/case">
+      <label>Case Title:</label>
+      <input type="text" name="case_title" required placeholder="Case title...">
+      <label>Description:</label>
+      <textarea name="description" required></textarea>
+      <button type="submit" class="send-btn">Submit Case</button>
+    </form>
+
+    <% if (cases && cases.length > 0) { %>
+      <h4>📄 Past Case Reports</h4>
+      <ul>
+        <% cases.forEach(c => { %>
+          <li><strong><%= c.case_title %>:</strong> <%= c.description %> (<%= c.created_at.toLocaleDateString() %>)</li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+
+  <!-- 🔹 Escalation Requests -->
+  <section class="report-section">
+    <h3>🚨 Escalation Request</h3>
+    <form method="POST" action="/manager/reports/escalation">
+      <label>Subject:</label>
+      <input type="text" name="subject" required placeholder="Urgent issue subject">
+      <label>Details:</label>
+      <textarea name="details" required></textarea>
+      <button type="submit" class="send-btn">Raise Escalation</button>
+    </form>
+
+    <% if (escalations && escalations.length > 0) { %>
+      <h4>⬆️ Your Escalations</h4>
+      <ul>
+        <% escalations.forEach(e => { %>
+          <li>
+            <strong><%= e.subject %></strong> - <%= e.details %> 
+            (<%= e.status %>) on <%= e.created_at.toLocaleDateString() %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+
+  <!-- 🔹 Admin Circulars -->
+  <section class="report-section">
+    <h3>📚 Admin Circulars & Training</h3>
+    <% if (circulars && circulars.length > 0) { %>
+      <ul>
+        <% circulars.forEach(c => { %>
+          <li>
+            <strong><%= c.title %></strong> - <%= c.content %>
+            <% if (c.attachment) { %>
+              <br><a href="/uploads/<%= c.attachment %>" target="_blank">📎 View Attachment</a>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No circulars uploaded yet.</p>
+    <% } %>
+  </section>
+</div>
+</body>
+</html>

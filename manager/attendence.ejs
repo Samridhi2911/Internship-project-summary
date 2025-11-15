@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance & Reports</title>
+  <link rel="stylesheet" href="/css/manager-style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="manager-dashboard-wrapper">
+  <h2 class="dashboard-heading">📅 Attendence & Reporting</h2>
+
+  <!-- ✅ Check-In / Check-Out Section -->
+  <section class="report-section">
+    <h3>🔘 Check-In / Check-Out</h3>
+    <% if (!todayLog) { %>
+      <form method="POST" action="/manager/attendence/checkin">
+        <button class="send-btn">☑️ Check In</button>
+      </form>
+    <% } else if (todayLog && !todayLog.check_out) { %>
+      <p><strong>Checked in:</strong> <%= todayLog.check_in.toLocaleTimeString() %></p>
+      <form method="POST" action="/manager/attendence/checkout">
+        <textarea name="summary" required placeholder="Work summary for today..."></textarea>
+        <button class="send-btn">⏹️ Check Out</button>
+      </form>
+    <% } else { %>
+      <p><strong>✔️ You have already checked out today.</strong></p>
+      <p><strong>Summary:</strong> <%= todayLog.summary %></p>
+    <% } %>
+  </section>
+
+  <!-- ✅ Attendance Table -->
+  <section class="report-section">
+    <h3>📊 Timesheet Logs</h3>
+    <% if (logs.length > 0) { %>
+      <div class="table-responsive">
+        <table class="reminder-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>Hours</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% logs.forEach(log => { %>
+              <tr>
+                <td><%= log.date.toISOString().slice(0,10) %></td>
+                <td><%= log.check_in?.toLocaleTimeString() || '-' %></td>
+                <td><%= log.check_out?.toLocaleTimeString() || '-' %></td>
+                <td>
+                  <% if (log.check_in && log.check_out) { %>
+                    <%= ((new Date(log.check_out) - new Date(log.check_in)) / (1000*60*60)).toFixed(1) %>h
+                  <% } else { %>
+                    -
+                  <% } %>
+                </td>
+                <td><%= log.summary || '-' %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p>No attendance logs yet.</p>
+    <% } %>
+  </section>
+
+  <!-- ✅ Monthly Report Submission -->
+  <section class="report-section">
+    <h3>📤 Monthly Report</h3>
+    <form method="POST" action="/manager/attendence/monthly">
+      <textarea name="content" required placeholder="Write your monthly summary here..."></textarea>
+      <button class="send-btn">📤 Submit Report</button>
+    </form>
+
+    <% if (monthlyReports.length > 0) { %>
+      <h4>📅 Past Monthly Reports</h4>
+      <ul>
+        <% monthlyReports.forEach(r => { %>
+          <li><strong><%= r.month_year %>:</strong> <%= r.content %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+</div>
+</body>
+</html>

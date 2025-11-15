@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Communication Logs</title>
+  <link rel="stylesheet" href="/css/manager-style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="manager-dashboard-wrapper">
+    <h2 class="dashboard-heading">📞 Communication Logs</h2>
+
+    <!-- 🔍 Filters -->
+    <form method="GET" action="/manager/communication" class="filter-form">
+      <input type="text" name="keyword" placeholder="Search user/message" value="<%= filters.keyword %>" />
+      <input type="date" name="start" value="<%= filters.start %>" />
+      <input type="date" name="end" value="<%= filters.end %>" />
+      <button class="send-btn" type="submit">🔍 Filter</button>
+    </form>
+
+    <!-- 💬 Chat Messages -->
+    <section class="log-section">
+      <h3>💬 Chat History</h3>
+      <% if (messages.length > 0) { %>
+        <div class="log-list">
+          <% messages.forEach(m => { %>
+            <div class="log-card">
+              <p><strong><%= m.sender_name %></strong> → <strong><%= m.receiver_name %></strong></p>
+              <p><%= m.content %></p>
+              <p class="log-time"><%= new Date(m.timestamp).toLocaleString() %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p>No chat messages found.</p>
+      <% } %>
+    </section>
+
+    <!-- ❤️ Interests -->
+    <section class="log-section">
+      <h3>❤️ Interest Requests</h3>
+      <% if (interests.length > 0) { %>
+        <div class="log-list">
+          <% interests.forEach(i => { %>
+            <div class="log-card">
+              <p><strong><%= i.from_name %></strong> ➝ <strong><%= i.to_name %></strong></p>
+              <p>Status: <span class="status-tag <%= i.status %>"><%= i.status %></span></p>
+              <p class="log-time"><%= new Date(i.sent_at).toLocaleString() %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p>No interest requests found.</p>
+      <% } %>
+    </section>
+  </div>
+</body>
+</html>

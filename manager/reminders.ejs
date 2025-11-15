@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reminders</title>
+  <link rel="stylesheet" href="/css/manager-style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="manager-dashboard-wrapper">
+  <h2 class="dashboard-heading">🔔 Reminder System</h2>
+
+  <!-- ✅ Reminder Form -->
+  <form method="POST" action="/manager/reminders/send" class="reminder-form">
+    <div>
+      <label>Select Users:</label><br>
+      <select name="user_ids" multiple required class="user-select">
+        <% users.forEach(user => { %>
+          <option value="<%= user.id %>"><%= user.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div>
+      <label>Message:</label>
+      <textarea name="message" required placeholder="Enter reminder message..."></textarea>
+    </div>
+
+    <div>
+      <label>Due Date:</label>
+      <input type="date" name="due_date" required>
+    </div>
+
+    <input type="hidden" name="type" value="custom">
+
+    <button type="submit" class="send-btn">➕ Add Reminder</button>
+  </form>
+
+  <!-- ✅ Reminders Table -->
+  <div class="table-responsive">
+    <table class="reminder-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Message</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% reminders.forEach(r => { %>
+          <tr class="<%= r.status === 'done' ? 'done-row' : '' %>">
+            <td><%= r.user_name || 'N/A' %></td>
+            <td><%= r.message %></td>
+            <td><%= r.due_date.toISOString().slice(0,10) %></td>
+            <td><%= r.status %></td>
+            <td><%= r.type %></td>
+            <td>
+              <% if (r.status !== 'done') { %>
+                <form method="POST" action="/manager/reminders/<%= r.id %>/complete" style="display:inline;">
+                  <button class="mark-btn">✔</button>
+                </form>
+              <% } %>
+              <form method="POST" action="/manager/reminders/<%= r.id %>/delete" style="display:inline;">
+                <button class="delete-btn">🗑</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
